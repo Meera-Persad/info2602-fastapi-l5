@@ -82,8 +82,15 @@ async def signup_page(request: Request):
 
 #Exercise-Log Out
 @auth_router.get("/logout", response_class=HTMLResponse)
-async def login_page(request: Request):
-    return templates.TemplateResponse(
-        request=request, 
-        name="login.html",
-    )
+async def logout_page(request: Request):
+    try:
+        response= RedirectResponse(url="/login", status_code=303)
+        response.delete.cookie("access_token")
+        flash(request, "User logged out! Cookie Deleted.")
+        return templates.TemplateResponse(
+            request=request, 
+            name="login.html",
+        )
+    except Exception as e:
+        print (e)
+        return
