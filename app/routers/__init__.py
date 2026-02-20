@@ -16,5 +16,5 @@ main_router.include_router(auth_router)
 from .todo import todo_router
 main_router.include_router(todo_router)
 
-from .index import index_router
-main_router.include_router(index_router)
+from .home import home_router
+main_router.include_router(home_router)

@@ -14,7 +14,6 @@ SECRET_KEY = "ThisIsAnExampleOfWhatNotToUseAsTheSecretKeyIRL"
 ALGORITHM = "HS256"
 
 password_hash = PasswordHash.recommended()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Converts plaintext password to encrypted password
 def encrypt_password(password:str):
@@ -61,9 +60,18 @@ async def get_current_user(request:Request, db:SessionDep)->User:
     if user_role == "admin":
         user = db.get(Admin,user_id)
     else:
-        user = db.get(RegularUser,user_id)
+        user = db.get(User,user_id)
     if user is None:
         raise credentials_exception
     return user
 
+async def is_logged_in(request: Request, db:SessionDep):
+    try:
+        await get_current_user(request, db)
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+IsUserLoggedIn = Annotated[bool, Depends(is_logged_in)]
 AuthDep = Annotated[User, Depends(get_current_user)]
