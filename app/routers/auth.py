@@ -94,3 +94,17 @@ async def logout_page(request: Request):
     except Exception as e:
         print (e)
         return
+    
+# @auth_router.get("/logout")
+# async def logout(request: Request, response: Response):
+#     response = RedirectResponse(
+#         url="/login",
+#         status_code=status.HTTP_303_SEE_OTHER
+#     )
+#     response.delete_cookie(
+#         key="access_token",
+#         httponly=True,
+#         samesite="lax"
+#     )
+#     flash(request, "User logged out!! Cookie Deleted.")
+#     return response
